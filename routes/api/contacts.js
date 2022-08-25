@@ -1,19 +1,32 @@
 const express = require("express");
 const router = express.Router();
+const { asyncWrapper } = require("../../middlewares/helpers/apiHelpers");
+
 const {
   getAll,
   getOneById,
   postNew,
   deleteById,
   putById,
+  patchFavotite,
 } = require("../../controllers/contactsControllers");
-const { fieldValidation } = require("../../middlewares/validation");
+
+const {
+  addFieldsValidation,
+  updateFieldsValidation,
+  updateFaforiteValidation,
+} = require("../../middlewares/validation");
 
 router
-  .get("/", getAll)
-  .get("/:contactId", getOneById)
-  .post("/", fieldValidation, postNew)
-  .delete("/:contactId", deleteById)
-  .put("/:contactId", fieldValidation, putById);
+  .get("/", asyncWrapper(getAll))
+  .get("/:contactId", asyncWrapper(getOneById))
+  .post("/", addFieldsValidation, asyncWrapper(postNew))
+  .delete("/:contactId", asyncWrapper(deleteById))
+  .put("/:contactId", updateFieldsValidation, asyncWrapper(putById))
+  .patch(
+    "/:contactId/favorite",
+    updateFaforiteValidation,
+    asyncWrapper(patchFavotite)
+  );
 
 module.exports = router;
