@@ -1,71 +1,16 @@
-const Joi = require("joi");
-const { ValidationError } = require("./helpers/errors");
-
-module.exports = {
-  addFieldsValidation: (req, res, next) => {
-    const schema = Joi.object({
-      name: Joi.string().required(),
-      email: Joi.string()
-        .email({
-          minDomainSegments: 2,
-          tlds: { allow: ["com", "net"] },
-        })
-        .required(),
-      phone: Joi.string()
-        .pattern(
-          /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/
-        )
-        .min(7)
-        .max(17)
-        .required(),
-      favorite: Joi.boolean(),
-    });
-
-    const { error } = schema.validate(req.body);
-
-    if (error) {
-      const [errorMessage] = error.details;
-      throw new ValidationError(`${errorMessage.message}`);
+const validation = (schema) => {
+    return async(req, res, next)=> {
+        const {error} = schema.validate(req.body);
+        if(error){
+            res.status(400).json({
+                status: "error",
+                code: 400,
+                message: error.message
+            });
+            return;
+        }
+        next();
     }
-    next();
-  },
-
-  updateFieldsValidation: (req, res, next) => {
-    const schema = Joi.object({
-      name: Joi.string(),
-      email: Joi.string().email({
-        minDomainSegments: 2,
-        tlds: { allow: ["com", "net"] },
-      }),
-      phone: Joi.string()
-        .pattern(
-          /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/
-        )
-        .min(7)
-        .max(17),
-      favorite: Joi.boolean(),
-    });
-
-    const { error } = schema.validate(req.body);
-
-    if (error) {
-      const [errorMessage] = error.details;
-      throw new ValidationError(`${errorMessage.message}`);
-    }
-    next();
-  },
-
-  updateFaforiteValidation: (req, res, next) => {
-    const schema = Joi.object({
-      favorite: Joi.boolean().required(),
-    });
-
-    const { error } = schema.validate(req.body);
-
-    if (error) {
-      const [errorMessage] = error.details;
-      throw new ValidationError(`${errorMessage.message}`);
-    }
-    next();
-  },
 };
+
+module.exports = validation;
