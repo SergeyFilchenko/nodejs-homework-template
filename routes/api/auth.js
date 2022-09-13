@@ -8,7 +8,11 @@ const {
 } = require("../../middlewares");
 const upload = require("../../middlewares/upload");
 const { auth: ctrl } = require("../../controllers");
-
+const {
+  joiSchema,
+  joiSubscrSchema,
+  verifyEmailSchema,
+} = require("../../models/user");
 const router = express.Router();
 
 module.exports = router;
