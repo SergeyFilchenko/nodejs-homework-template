@@ -5,8 +5,6 @@ require("dotenv").config();
 
 const authRouter = require("./routes/api/auth");
 
-const authRouter = require("./routes/api/auth");
-
 const contactsRouter = require("./routes/api/contacts");
 
 const app = express();
