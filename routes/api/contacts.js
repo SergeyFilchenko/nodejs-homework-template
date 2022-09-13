@@ -20,12 +20,6 @@ router.post(
   controllerWrapper(ctrl.addContact)
 );
 
-router.post(
-  "/verify",
-  validationBody(schemas.verifyEmailSchema),
-  controllerWrapper(ctrl.resendVerifyEmail)
-);
-
 router.delete(
   "/:contactId",
   authenticate,

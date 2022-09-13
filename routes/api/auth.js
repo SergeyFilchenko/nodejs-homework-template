@@ -29,8 +29,8 @@ router.post(
 
 router.post(
   "/verify",
-  validationBody(schemas.verifyEmailSchema),
-  controllerWrapper(ctrl.resendVerifyEmail)
+  validation(verifyEmailSchema),
+  controllerWrapper(ctrl.reverification)
 );
 
 router.patch(
