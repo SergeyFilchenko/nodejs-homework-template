@@ -5,9 +5,6 @@ const jwt = require("jsonwebtoken");
 
 const { SECRET_KEY } = process.env;
 
-const verifyEmailSchema = Joi.object({
-  email: Joi.string().required(),
-});
 const userSchema = Schema(
   {
     password: {
@@ -71,5 +68,9 @@ const joiSchema = Joi.object({
 });
 
 const User = model("user", userSchema);
+
+const verifyEmailSchema = Joi.object({
+  email: Joi.string().required(),
+});
 
 module.exports = { User, joiSchema, joiSubscrSchema, verifyEmailSchema };
